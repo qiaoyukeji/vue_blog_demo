@@ -1,16 +1,23 @@
 <template>
   <div id="app">
-    <AddBlog></AddBlog>
+    <BlogHeader></BlogHeader>
+    <!-- <AddBlog></AddBlog> -->
+    <!-- <ShowBlogs></ShowBlogs> -->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import AddBlog from "./components/AddBlog";
+import ShowBlogs from "./components/ShowBlogs";
+import BlogHeader from "./components/BlogHeader";
 
 export default {
   name: "App",
   components: {
-    AddBlog
+    AddBlog,
+    ShowBlogs,
+    BlogHeader
   }
 };
 </script>
