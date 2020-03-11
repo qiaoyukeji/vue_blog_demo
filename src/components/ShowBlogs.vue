@@ -6,6 +6,7 @@
       <router-link v-bind:to="'/blog/'+blog.id">
         <h2 v-rainbow>{{blog.title | to-uppercase}}</h2>
       </router-link>
+      <p class="right">{{blog.time}}</p>
       <p>{{blog.content | snippet}}</p>
     </div>
   </div>
@@ -74,6 +75,10 @@ export default {
 input {
   padding: 8px;
   width: 100%;
+  box-sizing: border-box;
+}
+.right {
+  float: right;
   box-sizing: border-box;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div id="add-blog">
-    <h2 v-if="pass">添加博客</h2>
+    <h2 v-if="pass">编辑博客</h2>
     <form v-show="!submited" v-if="pass">
       <label for>博客标题</label>
       <input type="text" v-model="blog.title" required />
@@ -25,12 +25,12 @@
       <select v-model="blog.author">
         <option v-for="(author,index) in authors" :key="index">{{author}}</option>
       </select>
-      <button @click.prevent="post">添加博客</button>
+      <button @click.prevent="post">编辑博客</button>
     </form>
 
-    <div>
+    <!-- <div>
       <input type="text" placeholder="请输入密码" v-if="!pass" v-model="passwd" @keyup.enter="jiami" />
-    </div>
+    </div>-->
 
     <div v-show="submited">
       <h3>您的博客发布成功</h3>
@@ -46,7 +46,6 @@
         <li v-for="(c,index) in blog.categories" :key="index">{{c}}</li>
       </ul>
       <p>作者：{{blog.author}}</p>
-      <p>时间：{{blog.time}}</p>
     </div>
   </div>
 </template>
@@ -58,27 +57,22 @@ export default {
   name: "add-blog",
   data() {
     return {
-      blog: {
-        title: "",
-        content: "",
-        categories: [],
-        author: "",
-        time: new Date()
-      },
+      id: this.$route.params.id,
+      blog: {},
       authors: ["qiaoyurensheng", "巧遇人生", "qiaoyukeji"],
       submited: false,
       password: 123456, //设置的密码
       passwd: null, //接受输入的密码
-      pass: false //根据密码是否相等，设置显示与隐藏
+      pass: true //根据密码是否相等，设置显示与隐藏
     };
   },
   methods: {
     post: function() {
       this.submited = true;
       this.$http
-        .post("https://my-blog-f3d50.firebaseio.com/posts.json", this.blog)
+        .put("https://my-blog-f3d50.firebaseio.com/posts.json", this.blog)
         .then(function(data) {
-          // console.log(data);
+          //   console.log(data);
         });
     },
     jiami() {
@@ -88,7 +82,19 @@ export default {
       } else {
         alert("密码错误，请重新输入！");
       }
+    },
+    fetchData() {
+      //   console.log(this.id);
+      this.$http
+        .get("https://my-blog-f3d50.firebaseio.com/posts/" + this.id + ".json")
+        .then(response => {
+          //   console.log(response.body);
+          this.blog = response.body;
+        });
     }
+  },
+  created() {
+    this.fetchData();
   }
 };
 </script>

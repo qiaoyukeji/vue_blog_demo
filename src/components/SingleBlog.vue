@@ -11,6 +11,9 @@
     <ul>
       <li v-for="c in blog.categories">{{c}}</li>
     </ul>
+    <p>{{blog.time}}</p>
+    <button @click="deleteSingleBlog">删除</button>
+    <router-link :to="'/edit/'+id">编辑</router-link>
   </div>
 </template>
 
@@ -34,6 +37,17 @@ export default {
       .then(function(data) {
         this.blog = data;
       });
+  },
+  methods: {
+    deleteSingleBlog() {
+      this.$http
+        .delete(
+          "https://my-blog-f3d50.firebaseio.com/posts/" + this.id + ".json"
+        )
+        .then(Response => {
+          this.$router.push({ path: "/" });
+        });
+    }
   }
 };
 </script>
